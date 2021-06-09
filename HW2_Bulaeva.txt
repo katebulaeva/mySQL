@@ -1,0 +1,108 @@
+﻿ЗАДАНИЕ 1. Установите СУБД MySQL. Создайте в домашней директории файл .my.cnf, задав в нем логин и пароль, который указывался при установке.
+
+Сделано, все получилось.
+
+C:\Users\Ivan Bulaev>cd C:\Program Files\MySQL\MySQL Server 5.7\bin
+C:\Program Files\MySQL\MySQL Server 5.7\bin>mysql
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 5.7.33-log MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> status
+--------------
+mysql  Ver 14.14 Distrib 5.7.33, for Win64 (x86_64)
+
+Connection id:          5
+Current database:
+Current user:           root@localhost
+SSL:                    Cipher in use is ECDHE-RSA-AES128-GCM-SHA256
+Using delimiter:        ;
+Server version:         5.7.33-log MySQL Community Server (GPL)
+Protocol version:       10
+Connection:             localhost via TCP/IP
+Server characterset:    latin1
+Db     characterset:    latin1
+Client characterset:    cp850
+Conn.  characterset:    cp850
+TCP port:               3306
+Uptime:                 13 min 51 sec
+
+Threads: 1  Questions: 21  Slow queries: 0  Opens: 115  Flush tables: 1  Open ta
+bles: 108  Queries per second avg: 0.025
+--------------
+
+mysql> exit
+Bye
+
+
+ЗАДАНИЕ 2. Создайте базу данных example, разместите в ней таблицу users, состоящую из двух столбцов, числового id и строкового name.
+
+в DBeaver написала следующее:
+
+drop table if exists Users;
+CREATE TABLE Users(
+id INT unsigned not null primary key,
+name varchar(70)
+);
+
+через терминал проверила:
+
+mysql> use example
+Database changed
+mysql> describe Users;
++-------+------------------+------+-----+---------+-------+
+| Field | Type             | Null | Key | Default | Extra |
++-------+------------------+------+-----+---------+-------+
+| id    | int(10) unsigned | NO   | PRI | NULL    |       |
+| name  | varchar(70)      | YES  |     | NULL    |       |
++-------+------------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql>
+
+ЗАДАНИЕ 3. 
+Создайте дамп базы данных example из предыдущего задания, разверните содержимое дампа в новую базу данных sample.
+
+испробовала много вариантов, были сложности, но в итоге успех:
+
+терминал:
+
+C:\Program Files\MySQL\MySQL Server 5.7\bin>mysqldump.exe -uroot -p example > F:
+\example_backup.sql
+Enter password: ********
+
+и еще вот так делала
+
+C:\Program Files\MySQL\MySQL Server 5.7\bin>mysqldump example > F:\examplebackup
+.sql
+
+Потом перенесла файл дампа в папку с MySQL.
+
+C:\Program Files\MySQL\MySQL Server 5.7\bin>mysql sample < examplebackup.sql
+
+C:\Program Files\MySQL\MySQL Server 5.7\bin>mysql
+
+mysql> show databases
+    -> ;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| example            |
+| gb                 |
+| mysql              |
+| performance_schema |
+| sample             |
+| sys                |
++--------------------+
+7 rows in set (0.01 sec)
+
+mysql>
